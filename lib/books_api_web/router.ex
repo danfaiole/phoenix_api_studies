@@ -5,11 +5,20 @@ defmodule BooksApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug :api
+    plug BooksApiWeb.Auth.Pipeline
+  end
+
   scope "/api", BooksApiWeb do
     pipe_through :api
-    resources "/books", BookController, except: [:new, :edit]
     post "/users/signup", UserController, :create
     post "/users/signin", UserController, :signin
+  end
+
+  scope "/api", BooksApiWeb do
+    pipe_through [:auth]
+    resources "/books", BookController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
