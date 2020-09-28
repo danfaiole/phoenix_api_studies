@@ -8,6 +8,8 @@ defmodule BooksApiWeb.Router do
   scope "/api", BooksApiWeb do
     pipe_through :api
     resources "/books", BookController, except: [:new, :edit]
+    post "/users/signup", UserController, :create
+    post "/users/signin", UserController, :signin
   end
 
   # Enables LiveDashboard only for development
